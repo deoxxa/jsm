@@ -1,0 +1,39 @@
+{
+  "name": "jsm",
+  "version": "0.0.0",
+  "description": "It's like ASM, but it's JavaScript underneath.",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "build-parser": "pegjs ./src/parser.peg ./lib/parser.js"
+  },
+  "bin": {
+    "jsm-assemble": "./bin/assemble.js",
+    "jsm-execute": "./bin/execute.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/deoxxa/jsm.git"
+  },
+  "keywords": [
+    "jsm",
+    "assembly",
+    "cpu",
+    "emulator",
+    "virtual",
+    "machine"
+  ],
+  "author": "Conrad Pankoff <deoxxa@fknsrs.biz> (http://www.fknsrs.biz/)",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/deoxxa/jsm/issues"
+  },
+  "devDependencies": {
+    "pegjs": "~0.7.0"
+  },
+  "dependencies": {
+    "concentrate": "~0.2.2"
+  }
+}

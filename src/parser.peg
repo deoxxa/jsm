@@ -1,0 +1,73 @@
+start = (
+  __ statement:( label / statement )? __ comment:comment? __ "\r"? "\n" {
+    return {
+      statement: statement || null,
+      comment: comment || null,
+    };
+  }
+)*
+
+_ = [ \t]
+__ = _*
+
+comment = ";" __ text:[^\r\n]* {
+  return text.join("");
+}
+
+label = ":" __ text:[a-z0-9_]+ {
+  return {
+    type: "label",
+    label: text.join(""),
+  };
+}
+
+statement = keyword:keyword parameters:( __ parameter:parameter "," { return parameter; } )* parameter:( __ parameter:parameter { return parameter; } )? {
+  return {
+    type: "statement",
+    keyword: keyword,
+    parameters: parameters.concat([parameter]).filter(function(e) { return !!e; }),
+  };
+}
+
+keyword = "NOP" / "SET" / "CPY" / "DRB" / "DWB" / "SRB" / "SWB" / "ADD" / "MUL" / "AND" / "OR" / "XOR" / "JMP" / "JNZ" / "JNE" / "END" / "str" / "hex" / "i8" / "i16" / "i32" / "buf"
+
+parameter = number / string / expression
+
+expression = "[" __ parts:( __ part:( expression_part / operator ) { return part; } )* __ "]" {
+  return {
+    type: "expression",
+    parts: parts,
+  };
+}
+
+expression_part = number / string / label / expression
+
+operator = operator:("=" / "+" / "-") {
+  return {
+    type: "operator",
+    operator: operator,
+  };
+}
+
+string = '"' text:[^"]+ '"' {
+  return {
+    type: "string",
+    text: text.join(""),
+  };
+}
+
+number = number_hex / number_dec
+
+number_dec = text:[0-9]+ {
+  return {
+    type: "number",
+    number: parseInt(text.join(""), 10),
+  };
+}
+
+number_hex = "0x" text:[0-9a-f]+ {
+  return {
+    type: "number",
+    number: parseInt(text.join(""), 16),
+  };
+}
