@@ -1,6 +1,6 @@
 {
   "name": "jsm",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "It's like ASM, but it's JavaScript underneath.",
   "main": "index.js",
   "directories": {
